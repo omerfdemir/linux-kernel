@@ -1,1 +1,1 @@
-asmlinkage long sys_VA_to_PA(unsigned long long va);
+asmlinkage long sys_VA_to_PA(int pid,unsigned long long va);

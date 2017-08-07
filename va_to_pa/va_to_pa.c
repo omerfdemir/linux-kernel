@@ -1,21 +1,32 @@
-#include<linux/kernel.h>
-#include<linux/init.h>
-#include<linux/sched.h>
-#include<linux/syscalls.h>
-#include<linux/mm.h>
-#include<asm/pgtable.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/pid.h>
+#include <linux/sched.h>
+#include <linux/syscalls.h>
+#include <linux/mm.h>
+#include <asm/pgtable.h>
 #include "va_to_pa.h"
 
 
-asmlinkage long sys_VA_to_PA(unsigned long long va){
+asmlinkage long sys_VA_to_PA(int pid,unsigned long long va){
 	pgd_t *pgd;
 	pud_t *pud;
 	pmd_t *pmd;
 	pte_t *ptep,pte;
 	unsigned long long physical_address;
-	
+	struct mm_struct *mm;
+	struct task_struct *task;	
 	struct page *page = NULL;
-	struct mm_struct *mm = current->mm;
+	if (pid == 0){
+	mm = current->mm;
+	}
+	else{
+	task = pid_task(find_vpid(pid), PIDTYPE_PID);
+	mm = task->mm;
+	}
+
+	
 
 	
 	pgd = pgd_offset(mm, va);
@@ -46,7 +57,7 @@ asmlinkage long sys_VA_to_PA(unsigned long long va){
 
 	pte_unmap(ptep);
 out:
-	return page;
+	printk("Out");
 return physical_address;
 
 }
