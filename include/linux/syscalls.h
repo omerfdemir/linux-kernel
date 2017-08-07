@@ -902,5 +902,5 @@ asmlinkage long sys_pkey_mprotect(unsigned long start, size_t len,
 				  unsigned long prot, int pkey);
 asmlinkage long sys_pkey_alloc(unsigned long flags, unsigned long init_val);
 asmlinkage long sys_pkey_free(int pkey);
-asmlinkage long sys_VA_to_PA(unsigned long long va);
+asmlinkage long sys_VA_to_PA(int pid,unsigned long long va);
 #endif
